@@ -13,6 +13,9 @@ class EncryptedLookupGenericViewSet(viewsets.GenericViewSet):
             lookup = kwargs.get(self.lookup_field, None)
 
             if lookup is not None:
+                # added to head off errors, hack solution:
+                self.request = request
+                self.format_kwarg = None
                 kwargs[self.lookup_field] = self.get_serializer().get_cipher().decode(lookup)
 
             return super(EncryptedLookupGenericViewSet, self).dispatch(request, *args, **kwargs)
